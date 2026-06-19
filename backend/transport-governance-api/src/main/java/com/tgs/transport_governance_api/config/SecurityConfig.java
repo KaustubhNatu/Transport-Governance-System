@@ -44,6 +44,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/schools/**")
                         .hasRole("SUPER_ADMIN")
 
+                        .requestMatchers(HttpMethod.POST, "/vendors/**")
+                        .hasRole("SUPER_ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/vendors/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
