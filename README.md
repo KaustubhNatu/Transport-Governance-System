@@ -1,6 +1,6 @@
 # Transport Governance System
 
-An enterprise-style backend platform designed to manage school transport vendors, compliance, financial reconciliation, and transfer workflows.
+An enterprise-style backend platform designed to manage private transport vendors/drivers, compliance, financial reconciliation, and transfer workflows for schools.
 
 ## Key Features
 
