@@ -67,6 +67,19 @@ public class SecurityConfig {
                                 "VENDOR_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/drivers/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/drivers/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
