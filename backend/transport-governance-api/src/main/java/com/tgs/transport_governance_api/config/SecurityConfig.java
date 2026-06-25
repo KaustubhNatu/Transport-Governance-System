@@ -80,6 +80,19 @@ public class SecurityConfig {
                                 "VENDOR_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/routes/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/routes/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
