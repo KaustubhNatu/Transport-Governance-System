@@ -93,6 +93,30 @@ public class SecurityConfig {
                                 "VENDOR_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/students/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/students/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.POST, "/parents/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/parents/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
