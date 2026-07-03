@@ -117,6 +117,18 @@ public class SecurityConfig {
                                 "SCHOOL_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/student-transport/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/student-transport/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
