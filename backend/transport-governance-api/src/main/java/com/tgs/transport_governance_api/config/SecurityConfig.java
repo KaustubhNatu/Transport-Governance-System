@@ -129,6 +129,19 @@ public class SecurityConfig {
                                 "SCHOOL_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/invoices/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.GET, "/invoices/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
                         .anyRequest()
                         .authenticated()
                 )
