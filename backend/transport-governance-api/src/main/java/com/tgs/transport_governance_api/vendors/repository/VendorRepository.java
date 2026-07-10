@@ -9,4 +9,5 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
     Optional<Vendor> findBySchoolIdAndCompanyName(
             Integer schoolId,
             String companyName);
+    Optional<Vendor> findByOwnerUserId(Integer ownerUserId);
 }

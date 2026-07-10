@@ -155,6 +155,22 @@ public class SecurityConfig {
                                 "VENDOR_ADMIN"
                         )
 
+                        .requestMatchers(HttpMethod.POST, "/transfer-notifications/**")
+                        .hasRole("SCHOOL_ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/transfer-notifications/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN"
+                        )
+
+                        .requestMatchers(HttpMethod.PUT, "/transfer-notifications/*/dues")
+                        .hasRole("VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/transfer-notifications/*/complete")
+                        .hasRole("SCHOOL_ADMIN")
+
                         .anyRequest()
                         .authenticated()
                 )
