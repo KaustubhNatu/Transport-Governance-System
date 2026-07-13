@@ -171,6 +171,30 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/transfer-notifications/*/complete")
                         .hasRole("SCHOOL_ADMIN")
 
+                        .requestMatchers(HttpMethod.POST, "/driver-documents/**")
+                        .hasRole("VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/driver-documents/**")
+                        .hasRole("VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/driver-documents/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/vehicle-documents/**")
+                        .hasRole("VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/vehicle-documents/**")
+                        .hasRole("VENDOR_ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/vehicle-documents/**")
+                        .hasAnyRole(
+                                "SUPER_ADMIN",
+                                "SCHOOL_ADMIN",
+                                "VENDOR_ADMIN")
+
                         .anyRequest()
                         .authenticated()
                 )
