@@ -10,4 +10,8 @@ public interface VehicleDocumentRepository
 
     List<VehicleDocument> findByVehicleId(Integer vehicleId);
 
+    boolean existsByVehicleIdAndDocumentType(
+            Integer vehicleId,
+            String documentType);
+
 }

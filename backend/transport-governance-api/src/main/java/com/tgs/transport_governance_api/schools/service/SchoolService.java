@@ -1,5 +1,6 @@
 package com.tgs.transport_governance_api.schools.service;
 
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.schools.dto.CreateSchoolRequest;
 import com.tgs.transport_governance_api.schools.dto.SchoolResponse;
 import com.tgs.transport_governance_api.schools.entity.School;
@@ -56,7 +57,7 @@ public class SchoolService {
 
         School school = schoolRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("School not found"));
+                        new ResourceNotFoundException("School not found"));
 
         return mapToResponse(school);
     }
@@ -67,7 +68,7 @@ public class SchoolService {
 
         School school = schoolRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("School not found"));
+                        new ResourceNotFoundException("School not found"));
 
         school.setName(request.getName());
         school.setAddress(request.getAddress());
@@ -84,7 +85,7 @@ public class SchoolService {
 
         School school = schoolRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("School not found"));
+                        new ResourceNotFoundException("School not found"));
 
         schoolRepository.delete(school);
     }

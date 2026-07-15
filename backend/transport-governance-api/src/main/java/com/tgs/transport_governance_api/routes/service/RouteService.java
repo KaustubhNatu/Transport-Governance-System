@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.routes.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.routes.dto.CreateRouteRequest;
 import com.tgs.transport_governance_api.routes.dto.RouteResponse;
 import com.tgs.transport_governance_api.routes.entity.Route;
@@ -24,7 +26,7 @@ public class RouteService {
                         request.getRouteName())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Route already exists");
         }
 
@@ -56,7 +58,7 @@ public class RouteService {
 
         Route route = routeRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Route not found"));
 
         return mapToResponse(route);

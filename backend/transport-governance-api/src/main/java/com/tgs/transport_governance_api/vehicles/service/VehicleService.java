@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.vehicles.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.vehicles.dto.CreateVehicleRequest;
 import com.tgs.transport_governance_api.vehicles.dto.VehicleResponse;
 import com.tgs.transport_governance_api.vehicles.entity.Vehicle;
@@ -23,7 +25,7 @@ public class VehicleService {
                         request.getRegistrationNumber())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Vehicle already exists");
         }
 
@@ -55,7 +57,7 @@ public class VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found"));
 
         return mapToResponse(vehicle);

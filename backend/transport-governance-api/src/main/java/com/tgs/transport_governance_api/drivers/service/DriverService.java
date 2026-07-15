@@ -4,6 +4,7 @@ import com.tgs.transport_governance_api.drivers.dto.CreateDriverRequest;
 import com.tgs.transport_governance_api.drivers.dto.DriverResponse;
 import com.tgs.transport_governance_api.drivers.entity.Driver;
 import com.tgs.transport_governance_api.drivers.repository.DriverRepository;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class DriverService {
 
         Driver driver = driverRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Driver not found"));
 
         return mapToResponse(driver);

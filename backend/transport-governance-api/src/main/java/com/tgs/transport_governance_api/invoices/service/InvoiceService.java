@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.invoices.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.invoices.dto.CreateInvoiceRequest;
 import com.tgs.transport_governance_api.invoices.dto.InvoiceResponse;
 import com.tgs.transport_governance_api.invoices.entity.Invoice;
@@ -34,12 +36,12 @@ public class InvoiceService {
 
         studentRepository.findById(request.getStudentId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Student not found"));
 
         vendorRepository.findById(request.getVendorId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Vendor not found"));
 
         StudentTransport assignment =
@@ -48,13 +50,13 @@ public class InvoiceService {
                                 request.getStudentId(),
                                 "ACTIVE")
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new BadRequestException(
                                         "Student has no active transport assignment"));
 
         if (!assignment.getVendorId().equals(
                 request.getVendorId())) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Student is not assigned to this vendor");
         }
 
@@ -65,7 +67,7 @@ public class InvoiceService {
                         request.getYear())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Invoice already exists for this month");
         }
 
@@ -100,7 +102,7 @@ public class InvoiceService {
 
         Invoice invoice = invoiceRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Invoice not found"));
 
         return mapToResponse(invoice);

@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.parents.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.parents.dto.CreateParentRequest;
 import com.tgs.transport_governance_api.parents.dto.ParentResponse;
 import com.tgs.transport_governance_api.parents.entity.Parent;
@@ -23,7 +25,7 @@ public class ParentService {
                 .findByUserId(request.getUserId())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Parent already exists");
         }
 
@@ -53,7 +55,7 @@ public class ParentService {
 
         Parent parent = parentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Parent not found"));
 
         return mapToResponse(parent);

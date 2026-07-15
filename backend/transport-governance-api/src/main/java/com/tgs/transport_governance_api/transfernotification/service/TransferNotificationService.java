@@ -1,6 +1,8 @@
 package com.tgs.transport_governance_api.transfernotification.service;
 
 import com.tgs.transport_governance_api.auth.service.CurrentUserService;
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.studenttransport.entity.StudentTransport;
 import com.tgs.transport_governance_api.studenttransport.repository.StudentTransportRepository;
 import com.tgs.transport_governance_api.students.repository.StudentRepository;
@@ -52,13 +54,13 @@ public class TransferNotificationService {
 
         studentRepository.findById(request.getStudentId())
                 .orElseThrow(() ->
-                        new RuntimeException("Student not found"));
+                        new ResourceNotFoundException("Student not found"));
 
         if (notificationRepository
                 .existsByStudentIdAndCompletedAtIsNull(
                         request.getStudentId())) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Active transfer notification already exists");
         }
 
@@ -68,7 +70,7 @@ public class TransferNotificationService {
                                 request.getStudentId(),
                                 "ACTIVE")
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Student transport assignment not found"));
 
         User currentUser =
@@ -136,7 +138,7 @@ public class TransferNotificationService {
         TransferNotification notification =
                 notificationRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Notification not found"));
 
         return mapToResponse(notification);
@@ -149,11 +151,11 @@ public class TransferNotificationService {
         TransferNotification notification =
                 notificationRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Notification not found"));
 
         if (notification.getCompletedAt() != null) {
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Cannot update dues for a completed notification.");
         }
         User currentUser =
@@ -162,7 +164,7 @@ public class TransferNotificationService {
         Vendor vendor = vendorRepository
                 .findByOwnerUserId(currentUser.getId())
                 .orElseThrow(() ->
-                        new RuntimeException("Vendor not found"));
+                        new ResourceNotFoundException("Vendor not found"));
 
         if (!notification.getVendorId().equals(vendor.getId())) {
             throw new RuntimeException(
@@ -193,11 +195,11 @@ public class TransferNotificationService {
         TransferNotification notification =
                 notificationRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Notification not found"));
 
         if (notification.getCompletedAt() != null) {
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Transfer notification is already completed.");
         }
         User currentUser =

@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.students.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.students.dto.CreateStudentRequest;
 import com.tgs.transport_governance_api.students.dto.StudentResponse;
 import com.tgs.transport_governance_api.students.entity.Student;
@@ -25,7 +27,7 @@ public class StudentService {
                         request.getName())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Student already exists");
         }
 
@@ -57,7 +59,7 @@ public class StudentService {
 
         Student student = studentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Student not found"));
 
         return mapToResponse(student);

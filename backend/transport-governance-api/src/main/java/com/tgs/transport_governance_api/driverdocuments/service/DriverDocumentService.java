@@ -5,6 +5,8 @@ import com.tgs.transport_governance_api.driverdocuments.dto.DriverDocumentRespon
 import com.tgs.transport_governance_api.driverdocuments.entity.DriverDocument;
 import com.tgs.transport_governance_api.driverdocuments.repository.DriverDocumentRepository;
 import com.tgs.transport_governance_api.drivers.repository.DriverRepository;
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,16 @@ public class DriverDocumentService {
 
         driverRepository.findById(request.getDriverId())
                 .orElseThrow(() ->
-                        new RuntimeException("Driver not found"));
+                        new ResourceNotFoundException("Driver not found"));
+
+        if (driverDocumentRepository
+                .existsByDriverIdAndDocumentType(
+                        request.getDriverId(),
+                        request.getDocumentType())) {
+
+            throw new BadRequestException(
+                    "Driver already has this document type.");
+        }
 
         DriverDocument document =
                 new DriverDocument();
@@ -56,7 +67,7 @@ public class DriverDocumentService {
         DriverDocument document =
                 driverDocumentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Document not found"));
 
         return mapToResponse(document);
@@ -69,13 +80,22 @@ public class DriverDocumentService {
         DriverDocument document =
                 driverDocumentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Document not found"));
 
         driverRepository.findById(request.getDriverId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Driver not found"));
+
+        if (!document.getDocumentType().equals(request.getDocumentType())
+                && driverDocumentRepository.existsByDriverIdAndDocumentType(
+                request.getDriverId(),
+                request.getDocumentType())) {
+
+            throw new BadRequestException(
+                    "Driver already has this document type.");
+        }
 
         document.setDriverId(request.getDriverId());
         document.setDocumentType(request.getDocumentType());

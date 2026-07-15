@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.users.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.users.dto.CreateUserRequest;
 import com.tgs.transport_governance_api.users.dto.UserResponse;
 import com.tgs.transport_governance_api.users.entity.Role;
@@ -28,11 +30,11 @@ public class UserService {
     public UserResponse createUser(CreateUserRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new BadRequestException("User already exists");
         }
 
         Role role = roleRepository.findByNameIgnoreCase(request.getRoleName())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Role not found: " + request.getRoleName()
                 ));
 

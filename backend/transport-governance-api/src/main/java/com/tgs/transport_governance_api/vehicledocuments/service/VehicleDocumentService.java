@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.vehicledocuments.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.vehicledocuments.dto.CreateVehicleDocumentRequest;
 import com.tgs.transport_governance_api.vehicledocuments.dto.VehicleDocumentResponse;
 import com.tgs.transport_governance_api.vehicledocuments.entity.VehicleDocument;
@@ -25,7 +27,16 @@ public class VehicleDocumentService {
 
         vehicleRepository.findById(request.getVehicleId())
                 .orElseThrow(() ->
-                        new RuntimeException("Vehicle not found"));
+                        new ResourceNotFoundException("Vehicle not found"));
+
+        if (vehicleDocumentRepository
+                .existsByVehicleIdAndDocumentType(
+                        request.getVehicleId(),
+                        request.getDocumentType())) {
+
+            throw new BadRequestException(
+                    "Vehicle already has this document type.");
+        }
 
         VehicleDocument document = new VehicleDocument();
 
@@ -55,7 +66,7 @@ public class VehicleDocumentService {
         VehicleDocument document =
                 vehicleDocumentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Document not found"));
 
         return mapToResponse(document);
@@ -68,13 +79,24 @@ public class VehicleDocumentService {
         VehicleDocument document =
                 vehicleDocumentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Document not found"));
+
+
 
         vehicleRepository.findById(request.getVehicleId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found"));
+
+        if (!document.getDocumentType().equals(request.getDocumentType())
+                && vehicleDocumentRepository.existsByVehicleIdAndDocumentType(
+                request.getVehicleId(),
+                request.getDocumentType())) {
+
+            throw new BadRequestException(
+                    "Vehicle already has this document type.");
+        }
 
         document.setVehicleId(request.getVehicleId());
         document.setDocumentType(request.getDocumentType());

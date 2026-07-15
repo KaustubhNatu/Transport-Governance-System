@@ -10,4 +10,8 @@ public interface DriverDocumentRepository
 
     List<DriverDocument> findByDriverId(Integer driverId);
 
+    boolean existsByDriverIdAndDocumentType(
+            Integer driverId,
+            String documentType);
+
 }

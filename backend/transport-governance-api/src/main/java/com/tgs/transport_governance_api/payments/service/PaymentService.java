@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.payments.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.invoices.entity.Invoice;
 import com.tgs.transport_governance_api.invoices.repository.InvoiceRepository;
 import com.tgs.transport_governance_api.payments.dto.CreatePaymentRequest;
@@ -33,30 +35,30 @@ public class PaymentService {
         Invoice invoice = invoiceRepository.findById(
                         request.getInvoiceId())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Invoice not found"));
 
         userRepository.findById(request.getRecordedBy())
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "User not found"));
 
         if (!invoice.getStatus().equals("PENDING")) {
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Invoice is already paid");
         }
 
         if (paymentRepository.findByInvoiceId(
                 request.getInvoiceId()).isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Payment already exists for this invoice");
         }
 
         if (invoice.getAmount().compareTo(
                 request.getAmount()) != 0) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Payment amount must match invoice amount");
         }
 
@@ -95,7 +97,7 @@ public class PaymentService {
 
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Payment not found"));
 
         return mapToResponse(payment);

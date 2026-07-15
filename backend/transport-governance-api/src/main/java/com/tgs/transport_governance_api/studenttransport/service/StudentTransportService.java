@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.studenttransport.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.routes.entity.Route;
 import com.tgs.transport_governance_api.routes.repository.RouteRepository;
 import com.tgs.transport_governance_api.studenttransport.dto.CreateStudentTransportRequest;
@@ -40,11 +42,11 @@ public class StudentTransportService {
 
         studentRepository.findById(request.getStudentId())
                 .orElseThrow(() ->
-                        new RuntimeException("Student not found"));
+                        new ResourceNotFoundException("Student not found"));
 
         vendorRepository.findById(request.getVendorId())
                 .orElseThrow(() ->
-                        new RuntimeException("Vendor not found"));
+                        new ResourceNotFoundException("Vendor not found"));
 
         if (studentTransportRepository
                 .findByStudentIdAndStatus(
@@ -52,7 +54,7 @@ public class StudentTransportService {
                         "ACTIVE")
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Student already has an active transport assignment");
         }
 
@@ -61,12 +63,12 @@ public class StudentTransportService {
             Route route = routeRepository.findById(
                             request.getRouteId())
                     .orElseThrow(() ->
-                            new RuntimeException("Route not found"));
+                            new ResourceNotFoundException("Route not found"));
 
             if (!route.getVendorId().equals(
                     request.getVendorId())) {
 
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "Route does not belong to vendor");
             }
         }
@@ -76,12 +78,12 @@ public class StudentTransportService {
             Vehicle vehicle = vehicleRepository.findById(
                             request.getVehicleId())
                     .orElseThrow(() ->
-                            new RuntimeException("Vehicle not found"));
+                            new ResourceNotFoundException("Vehicle not found"));
 
             if (!vehicle.getVendorId().equals(
                     request.getVendorId())) {
 
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "Vehicle does not belong to vendor");
             }
         }
@@ -92,22 +94,22 @@ public class StudentTransportService {
             Route route = routeRepository.findById(
                             request.getRouteId())
                     .orElseThrow(() ->
-                            new RuntimeException("Route not found"));
+                            new ResourceNotFoundException("Route not found"));
 
             if (route.getVehicleId() == null) {
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "No vehicle assigned to route");
             }
 
             if (!route.getVehicleId().equals(
                     request.getVehicleId())) {
 
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "Vehicle does not match selected route");
             }
 
             if (route.getDriverId() == null) {
-                throw new RuntimeException(
+                throw new BadRequestException(
                         "No driver assigned to route");
             }
         }
@@ -144,7 +146,7 @@ public class StudentTransportService {
         StudentTransport transport =
                 studentTransportRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException(
+                                new ResourceNotFoundException(
                                         "Assignment not found"));
 
         return mapToResponse(transport);

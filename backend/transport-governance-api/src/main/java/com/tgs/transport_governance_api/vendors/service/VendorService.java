@@ -1,5 +1,7 @@
 package com.tgs.transport_governance_api.vendors.service;
 
+import com.tgs.transport_governance_api.exception.BadRequestException;
+import com.tgs.transport_governance_api.exception.ResourceNotFoundException;
 import com.tgs.transport_governance_api.vendors.dto.CreateVendorRequest;
 import com.tgs.transport_governance_api.vendors.dto.VendorResponse;
 import com.tgs.transport_governance_api.vendors.entity.Vendor;
@@ -24,7 +26,7 @@ public class VendorService {
                         request.getCompanyName())
                 .isPresent()) {
 
-            throw new RuntimeException(
+            throw new BadRequestException(
                     "Vendor already exists");
         }
 
@@ -53,7 +55,7 @@ public class VendorService {
 
         Vendor vendor = vendorRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Vendor not found"));
+                        new ResourceNotFoundException("Vendor not found"));
 
         return mapToResponse(vendor);
     }

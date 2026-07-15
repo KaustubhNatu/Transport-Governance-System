@@ -4,6 +4,7 @@ import com.tgs.transport_governance_api.auth.JwtService;
 import com.tgs.transport_governance_api.auth.dto.LoginRequest;
 import com.tgs.transport_governance_api.auth.dto.LoginResponse;
 import com.tgs.transport_governance_api.auth.dto.RegisterRequest;
+import com.tgs.transport_governance_api.exception.BadRequestException;
 import com.tgs.transport_governance_api.users.dto.UserResponse;
 import com.tgs.transport_governance_api.users.entity.Role;
 import com.tgs.transport_governance_api.users.entity.User;
@@ -49,7 +50,7 @@ public class AuthService {
     }
     public UserResponse register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new BadRequestException("User already exists");
         }
 
         Role role = roleRepository
