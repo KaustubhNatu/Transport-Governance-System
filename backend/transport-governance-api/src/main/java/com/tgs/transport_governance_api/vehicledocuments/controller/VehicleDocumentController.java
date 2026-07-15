@@ -3,6 +3,7 @@ package com.tgs.transport_governance_api.vehicledocuments.controller;
 import com.tgs.transport_governance_api.vehicledocuments.dto.CreateVehicleDocumentRequest;
 import com.tgs.transport_governance_api.vehicledocuments.dto.VehicleDocumentResponse;
 import com.tgs.transport_governance_api.vehicledocuments.service.VehicleDocumentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class VehicleDocumentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public VehicleDocumentResponse createDocument(
-            @RequestBody CreateVehicleDocumentRequest request) {
+            @RequestBody @Valid CreateVehicleDocumentRequest request) {
 
         return vehicleDocumentService.createDocument(request);
     }
@@ -40,7 +41,7 @@ public class VehicleDocumentController {
     @PutMapping("/{id}")
     public VehicleDocumentResponse updateDocument(
             @PathVariable Integer id,
-            @RequestBody CreateVehicleDocumentRequest request) {
+            @RequestBody @Valid CreateVehicleDocumentRequest request) {
 
         return vehicleDocumentService.updateDocument(id, request);
     }
