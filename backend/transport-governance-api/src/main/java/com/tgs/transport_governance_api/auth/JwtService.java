@@ -1,5 +1,6 @@
 package com.tgs.transport_governance_api.auth;
 
+import com.tgs.transport_governance_api.users.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +18,11 @@ public class JwtService {
     private final SecretKey key =
             Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    public String generateToken(String email) {
+    public String generateToken(User user) {
 
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("role", user.getRoles())
                 .issuedAt(new Date())
                 .expiration(
                         new Date(System.currentTimeMillis()
@@ -39,10 +41,24 @@ public class JwtService {
                 .getSubject();
     }
 
+    public Date extractExpiration(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
 
         String username = extractUsername(token);
 
-        return username.equals(userDetails.getUsername());
+        return username.equals(userDetails.getUsername())
+                && !isTokenExpired(token);
     }
 }

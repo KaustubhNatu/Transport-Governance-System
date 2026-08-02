@@ -1,5 +1,14 @@
-function LoginPage() {
-    return <h1>Login Page</h1>;
-}
+import { useAuth } from "../../contexts/AuthContext";
 
-export default LoginPage;
+const { login } = useAuth();
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        await login(email, password);
+        console.log("Login successful");
+    } catch (err) {
+        console.error(err);
+    }
+};

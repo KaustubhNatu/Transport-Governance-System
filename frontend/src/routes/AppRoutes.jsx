@@ -7,6 +7,7 @@ import VendorDashboard from "../pages/vendor/VendorDashboard";
 import DriverDashboard from "../pages/driver/DriverDashboard";
 import ParentDashboard from "../pages/parent/ParentDashboard";
 import NotFoundPage from "../pages/error/NotFoundPage";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 function AppRoutes() {
     return (
@@ -17,27 +18,47 @@ function AppRoutes() {
 
                 <Route
                     path="/super-admin/dashboard"
-                    element={<SuperAdminDashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <SuperAdminDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/school/dashboard"
-                    element={<SchoolDashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <SchoolDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/vendor/dashboard"
-                    element={<VendorDashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <VendorDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/driver/dashboard"
-                    element={<DriverDashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <DriverDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/parent/dashboard"
-                    element={<ParentDashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <ParentDashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
