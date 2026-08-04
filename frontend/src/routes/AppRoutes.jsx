@@ -8,6 +8,7 @@ import DriverDashboard from "../pages/driver/DriverDashboard";
 import ParentDashboard from "../pages/parent/ParentDashboard";
 import NotFoundPage from "../pages/error/NotFoundPage";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import RoleRoute from "./RoleRoute.jsx";
 
 function AppRoutes() {
     return (
@@ -20,7 +21,9 @@ function AppRoutes() {
                     path="/super-admin/dashboard"
                     element={
                         <ProtectedRoute>
-                            <SuperAdminDashboard />
+                            <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+                                <SuperAdminDashboard />
+                            </RoleRoute>
                         </ProtectedRoute>
                     }
                 />
@@ -29,7 +32,9 @@ function AppRoutes() {
                     path="/school/dashboard"
                     element={
                         <ProtectedRoute>
-                            <SchoolDashboard />
+                            <RoleRoute allowedRoles={["SCHOOL_ADMIN"]}>
+                                <SchoolDashboard />
+                            </RoleRoute>
                         </ProtectedRoute>
                     }
                 />
@@ -38,7 +43,9 @@ function AppRoutes() {
                     path="/vendor/dashboard"
                     element={
                         <ProtectedRoute>
-                            <VendorDashboard />
+                            <RoleRoute allowedRoles={["VENDOR_ADMIN"]}>
+                                <VendorDashboard />
+                            </RoleRoute>
                         </ProtectedRoute>
                     }
                 />
@@ -47,7 +54,9 @@ function AppRoutes() {
                     path="/driver/dashboard"
                     element={
                         <ProtectedRoute>
-                            <DriverDashboard />
+                            <RoleRoute allowedRoles={["DRIVER"]}>
+                                <DriverDashboard />
+                            </RoleRoute>
                         </ProtectedRoute>
                     }
                 />
@@ -56,7 +65,9 @@ function AppRoutes() {
                     path="/parent/dashboard"
                     element={
                         <ProtectedRoute>
-                            <ParentDashboard />
+                            <RoleRoute allowedRoles={["PARENT"]}>
+                                <ParentDashboard />
+                            </RoleRoute>
                         </ProtectedRoute>
                     }
                 />

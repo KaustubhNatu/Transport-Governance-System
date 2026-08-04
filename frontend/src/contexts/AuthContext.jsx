@@ -16,11 +16,15 @@ export function AuthProvider({ children }) {
 
         const decoded = jwtDecode(token);
 
-        setUser({
+        const loggedInUser = {
             email: decoded.sub,
             role: decoded.role[0].name,
             token,
-        });
+        };
+
+        setUser(loggedInUser);
+
+        return loggedInUser;
     };
 
     const logout = () => {
