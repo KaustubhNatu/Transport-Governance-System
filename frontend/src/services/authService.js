@@ -2,12 +2,13 @@ import axiosInstance from "./api/axiosInstance";
 
 const authService = {
     async login(credentials) {
-        try {
-            const response = await axiosInstance.post("/auth/login", credentials);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        const response = await axiosInstance.post("/auth/login", credentials);
+        return response.data;
+    },
+
+    async register(userData) {
+        const response = await axiosInstance.post("/auth/register", userData);
+        return response.data;
     },
 };
 
