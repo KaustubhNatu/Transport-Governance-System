@@ -347,3 +347,4 @@ class TransferNotificationServiceTest {
         assertEquals("Created", events.get(0).getNotes());
     }
 }
+

@@ -202,3 +202,4 @@ class TransferNotificationControllerTest {
                 .andExpect(status().isForbidden());
     }
 }
+

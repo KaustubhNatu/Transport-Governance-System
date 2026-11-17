@@ -59,3 +59,4 @@ class StudentTransportRepositoryTest {
         assertThat(otherStudent).isEmpty();
     }
 }
+

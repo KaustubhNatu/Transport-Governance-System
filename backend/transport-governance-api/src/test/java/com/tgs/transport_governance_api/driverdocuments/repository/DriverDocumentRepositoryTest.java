@@ -67,3 +67,4 @@ class DriverDocumentRepositoryTest {
         assertFalse(driverDocumentRepository.existsByDriverIdAndDocumentType(999, "LICENSE"));
     }
 }
+

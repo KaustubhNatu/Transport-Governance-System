@@ -199,3 +199,4 @@ class DriverDocumentServiceTest {
         assertThrows(BadRequestException.class, () -> driverDocumentService.updateDocument(1, request));
     }
 }
+

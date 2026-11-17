@@ -67,3 +67,4 @@ class VehicleDocumentRepositoryTest {
         assertFalse(vehicleDocumentRepository.existsByVehicleIdAndDocumentType(999, "INSURANCE"));
     }
 }
+

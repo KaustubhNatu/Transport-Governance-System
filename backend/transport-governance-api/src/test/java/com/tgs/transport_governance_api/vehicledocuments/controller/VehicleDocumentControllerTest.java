@@ -182,3 +182,4 @@ class VehicleDocumentControllerTest {
                 .andExpect(status().isForbidden());
     }
 }
+

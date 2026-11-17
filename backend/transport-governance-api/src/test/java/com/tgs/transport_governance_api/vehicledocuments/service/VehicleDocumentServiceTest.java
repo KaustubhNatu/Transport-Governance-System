@@ -197,3 +197,4 @@ class VehicleDocumentServiceTest {
         assertThrows(BadRequestException.class, () -> vehicleDocumentService.updateDocument(1, request));
     }
 }
+
